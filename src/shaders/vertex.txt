@@ -1,0 +1,28 @@
+#version 330 core
+
+
+layout (location=0) in vec2 vertexPos;
+layout (location=1) in vec2 textureCoord;
+layout (location=2) in int targetTexture;
+
+uniform float zoom;
+
+out vec2 texCoord;
+flat out int texIndex;
+
+void main(){
+	
+	
+	
+	
+	
+	
+	gl_Position = vec4((vertexPos) * zoom, 0.0, 1.0);
+	
+	texCoord = textureCoord;
+	texIndex = targetTexture;
+}
+
+
+
+

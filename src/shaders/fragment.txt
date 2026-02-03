@@ -1,0 +1,23 @@
+#version 330 core
+
+
+in vec2 texCoord;
+
+flat in int texIndex;
+
+
+out vec4 screenColor;
+
+uniform sampler2DArray textures;
+
+void main(){
+	
+	
+	screenColor = texture(textures, vec3(texCoord.xy, texIndex));
+	
+	
+}
+
+
+
+

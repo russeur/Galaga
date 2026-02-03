@@ -1,0 +1,37 @@
+#version 330 core
+
+
+layout (location=0) in vec2 vertexPos;
+layout (location=1) in vec2 is_top;
+layout (location=2) in float full_amount;
+layout (location=3) in vec3 color;
+
+
+
+uniform float zoom;
+
+out vec2 bar_pos;
+out float frag_full_amount;
+out vec3 frag_color;
+
+
+
+void main(){
+	
+	
+	
+	
+	
+	
+	gl_Position = vec4((vertexPos) * zoom, 0.0, 1.0);
+
+	bar_pos = is_top;
+	frag_full_amount = float(full_amount);
+	frag_color = color;
+	
+	
+}
+
+
+
+

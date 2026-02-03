@@ -1,0 +1,17 @@
+#version 330 core
+
+
+layout (location=0) in vec2 vertexPos;
+layout (location=1) in int point_location;//0 for begining of path, 1 for middle, 2 for end
+
+
+uniform float zoom;
+uniform vec2 offset;
+
+flat out int frag_point_location;
+
+void main(){
+	gl_Position = vec4((vertexPos + offset) * zoom, 0.0, 1.0);
+
+	frag_point_location = point_location;
+}

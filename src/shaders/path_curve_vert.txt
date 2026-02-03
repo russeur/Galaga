@@ -1,0 +1,18 @@
+#version 330 core
+
+
+layout (location=0) in vec2 vertexPos;
+
+
+uniform float zoom;
+uniform vec2 window_size;
+uniform vec2 offset;
+
+vec2 screen_to_UV_pos(vec2 screen_pos){
+	return vec2((screen_pos.x - window_size.x/2.0f) / (window_size.x/2.0f), -(screen_pos.y - window_size.y/2.0f) / (window_size.y/2.0f));
+}
+
+
+void main(){
+	gl_Position = vec4(screen_to_UV_pos(vertexPos + offset) * zoom, 0.0, 1.0);
+}

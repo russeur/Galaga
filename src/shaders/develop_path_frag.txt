@@ -1,0 +1,43 @@
+#version 330 core
+
+
+in vec2 frag_pos;
+
+
+out vec4 screenColor;
+
+const int max_points = 100;
+
+uniform float aspect_ratio;
+uniform vec2 path_poses[max_points];
+uniform vec3 path_colors[max_points];
+
+
+float inside_circle(vec2 circle_center, float rad, vec2 pos){
+	pos-=circle_center;
+	pos.x *= aspect_ratio;
+	float dist = sqrt(pos.x*pos.x + pos.y*pos.y);
+	return 1 -step(rad, dist);
+
+}
+
+
+
+void main(){
+	
+	vec3 color = {0.0, 0.0, 0.5};
+	float is_inside_circles = 0.0;
+
+	for (int i = 0; i < max_points; i++){
+		float is_inside = inside_circle(path_poses[i], .01, frag_pos);
+		is_inside_circles += is_inside;
+		color = (color * (1 - is_inside)) + (path_colors[i] * is_inside);
+	}
+	
+	screenColor = vec4(color, is_inside_circles);
+	
+}
+
+
+
+
