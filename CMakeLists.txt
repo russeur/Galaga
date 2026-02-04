@@ -23,7 +23,9 @@ src/debug_manager.cpp
 src/galaga_objects.cpp
 src/path_objects.cpp
 src/game_ui.cpp
-src/BarManager.cpp)
+src/BarManager.cpp
+
+)
 
 target_include_directories(main PRIVATE dependencies headers)
 
@@ -53,9 +55,22 @@ src/galaga_objects.cpp
 src/path_objects.cpp
 src/path_developer.cpp
 src/game_ui.cpp
-src/BarManager.cpp)
+src/BarManager.cpp
 
-target_include_directories(stage_editor PRIVATE dependencies headers)
+dependencies/imgui/imgui.cpp
+dependencies/imgui/imgui_draw.cpp
+dependencies/imgui/imgui_tables.cpp
+dependencies/imgui/imgui_widgets.cpp
+dependencies/imgui/backends/imgui_impl_glfw.cpp
+dependencies/imgui/backends/imgui_impl_opengl3.cpp
+)
+
+
+target_include_directories(stage_editor PRIVATE 
+dependencies 
+headers
+dependencies/imgui
+dependencies/imgui/backends)
 
 
 target_link_directories(stage_editor PRIVATE lib)

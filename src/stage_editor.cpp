@@ -8,6 +8,11 @@
 #include <string>
 
 
+#include <imgui.h>
+#include <imgui_impl_glfw.h>
+#include <imgui_impl_opengl3.h>
+
+
 
 void save_stage(int stage, Path** stage_paths, int path_count, Bug_Spawner_Dev** stage_bug_spawners, int spawner_count);
 
