@@ -43,6 +43,20 @@ int main() {
 	Window* window = Window::init_window(640, 640, "My Window");
 	window->set_clear_color(Color{0.25f, 0.5f, 0.75f, 1.0f});
 	glDisable(GL_CULL_FACE);
+	
+	
+	
+	IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO();
+
+    ImGui::StyleColorsDark();
+
+    ImGui_ImplGlfw_InitForOpenGL(window->get_window(), true);
+    ImGui_ImplOpenGL3_Init("#version 330 core");
+	
+	
+	
 	{
 	Texture_Manager text_man(16, 16); 
 	
@@ -112,6 +126,12 @@ int main() {
 	
 	
 	while(!window->window_should_close()){
+		
+		
+		ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+		
 		
 		
 		//std::cout<<"is_colliding"<<ship.get_child<Collider>("SCollider")->is_colliding_with(bug.get_child<Collider>("BCollider"))<<"\n";
@@ -309,7 +329,7 @@ int main() {
 			}
 		}
 		
-		
+		// if they are simulating a stage
 		if (started_path){
 			
 		
@@ -322,7 +342,7 @@ int main() {
 		
 		
 		
-		
+		 // change zoom
 		if (window->get_key_button_state(GLFW_KEY_3) == GLFW_PRESS){
 			text_man.modify_zoom(-.005f);
 			
@@ -372,6 +392,9 @@ int main() {
 			
 		}
 		path_manager.draw_all_paths();
+		
+		ImGui::Render();
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 		
 		window->update_frame();
 		
