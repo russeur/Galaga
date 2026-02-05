@@ -5,6 +5,8 @@ project(Galaga VERSION 1.0.0)
 cmake_policy(SET CMP0072 NEW)
 
 find_package(OpenGL REQUIRED)
+add_compile_options(-Wall)
+
 
 add_executable(main 
 src/config.h 

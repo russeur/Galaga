@@ -68,7 +68,7 @@ int main() {
 	text_man.set_texture(15, "../textures/editor_window_area.png");
 	
 	
-	text_man.new_texture_rect(window->screen_to_UV_pos(Position2D{0, 0}), window->screen_to_UV_vector(Position2D{window->width, window->height}), 15);
+	
 	
 	
 	Collision_Debug_Manager collider_manager(window);
@@ -98,8 +98,7 @@ int main() {
 	
 	
 	
-	double lastTime = glfwGetTime();
-	int frameCount = 0;
+	
 	
 	Number_Texture stage_label(&text_man, window, Position2D{50, 50}, false);
 	stage_label.set_font_size(50);
@@ -151,7 +150,7 @@ int main() {
 			
 			if (!started_path){
 				
-				if (window->get_key_button_state(GLFW_KEY_P) == GLFW_PRESS){
+				if (window->get_key_button_state(GLFW_KEY_P) == GLFW_PRESS){ // create new path
 					
 					//root.bug_container->add_path(.5, 60, nullptr, 0);
 					
@@ -202,21 +201,21 @@ int main() {
 		}
 	
 		
-		if (!started_path && window->get_key_button_state(GLFW_KEY_S) == GLFW_PRESS){
+		if (!started_path && window->get_key_button_state(GLFW_KEY_S) == GLFW_PRESS){ // start sim
 			
-			for (int i= 0; i < path_manager.paths.size(); i++){
+			for (int i= 0; i < static_cast<int>(path_manager.paths.size()); i++){
 				
 				root.bug_container->add_path(path_manager.paths[i]->smoothness, path_manager.paths[i]->speed, path_manager.paths[i]->path_points.data(), path_manager.paths[i]->path_points.size());
 				
 			}
-			for (int i = 0; i< path_manager.bug_spawners.size(); i++){
+			for (int i = 0; i< static_cast<int>(path_manager.bug_spawners.size()); i++){
 				
 				root.bug_container->add_spawner(path_manager.bug_spawners[i]->target_path, path_manager.bug_spawners[i]->max_enemy_count, path_manager.bug_spawners[i]->spawn_interval, path_manager.bug_spawners[i]->bug_type, path_manager.bug_spawners[i]->offset);
 			}
 			started_path = true;
 			root.bug_container->start_stage();
 			
-		}else if (started_path && window->get_key_button_state(GLFW_KEY_E) == GLFW_PRESS){
+		}else if (started_path && window->get_key_button_state(GLFW_KEY_E) == GLFW_PRESS){ // end sim
 			
 			root.bug_container->end_stage();
 			root.bug_container->kill_all_bugs();
@@ -483,7 +482,7 @@ void load_stage(int stage, Path_Developer_Manager* path_man){
 			path_man->add_path(path_man->get_unique_color(), smoothness, speed);
 			
 			Position2D path_point;
-			for (int i = 0; i < number_of_points; i++){
+			for (int i = 0; i < static_cast<int>(number_of_points); i++){
 				ifs.read(reinterpret_cast<char*>(&path_point), sizeof(Position2D));
 				path_man->add_point_to_path(p, path_point);
 			}

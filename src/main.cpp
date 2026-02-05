@@ -77,7 +77,7 @@ int main() {
 	menu_text_man.new_texture_rect(window->screen_to_UV_pos({380, 500}), window->screen_to_UV_vector({500, -500}), 2); // make high score label 2 texture
 	
 	
-	Number_Texture high_score(&menu_num_man, window, Position2D{window->width-75, 310}, false); // create new number attached to the menu_num_man for the high score
+	Number_Texture high_score(&menu_num_man, window, Position2D{static_cast<float>(window->width-75), 310}, false); // create new number attached to the menu_num_man for the high score
 	high_score.set_font_size(75);
 	high_score.update_number(0);
 	
@@ -91,8 +91,7 @@ int main() {
 	
 	
 	
-	double lastTime = glfwGetTime();
-	int frameCount = 0;
+	
 	
 	
 	
@@ -171,7 +170,7 @@ void run_menu(Window* window, Galaga_Root* root, Texture_Manager* menu_text_man,
 void run_simulation(Window* window,  Galaga_Root* root, Texture_Manager* text_man, Collision_Debug_Manager* collider_manager, Bar_Manager* bar_man){
 	
 	if (!clicking_left && window->get_mouse_button_state(GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS){
-		root->add_bug<Bug>(Position2D{window->cursor_x, window->cursor_y}, "bug1");
+		root->add_bug<Bug>(Position2D{static_cast<float>(window->cursor_x), static_cast<float>(window->cursor_y)}, "bug1");
 		clicking_left=true;
 		
 	}

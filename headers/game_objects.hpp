@@ -131,7 +131,7 @@ template <typename T> T* Node2D::get_child(int index){
 	static_assert(std::is_base_of<Node2D, T>::value, "T must be derived from Node2D!");
 	//make sure index is in bounds
 	if (index == -1) index = get_child_count()-1;
-	assert(index < children.size());
+	assert(index < static_cast<int>(children.size()));
 	//cast the child to the target type
 	T* child = dynamic_cast<T*>(children[index]);
 	//test if the target type is the same as 
@@ -145,7 +145,7 @@ template <typename T> T* Node2D::get_child(const char* name){
 	//make sure target type is derived from Node2D
 	static_assert(std::is_base_of<Node2D, T>::value, "T must be derived from Node2D!");
 	T* child = nullptr;
-	for (size_t i = 0; i < children.size(); i++){
+	for (int i = 0; i < static_cast<int>(children.size()); i++){
 		if (children[i]->name == name){
 			child = dynamic_cast<T*>(children[i]);
 		}

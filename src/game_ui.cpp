@@ -3,7 +3,7 @@ void Number_Texture::set_texture_numbers(){
 	if (current_number_string.length() != texture_digits.size()) return;
 	
 	
-	for (int i = 0; i < texture_digits.size(); i++){
+	for (int i = 0; i < static_cast<int>(texture_digits.size()); i++){
 		
 		text_man->set_rect_texture(texture_digits[i], std::stoi(std::string(1, current_number_string[texture_digits.size()-i-1])) + text_man->get_number_offset());
 		
@@ -54,7 +54,7 @@ void Number_Texture::set_pos(Position2D new_pos){
 }
 void Number_Texture::modify_pos(Position2D delta){
 	position += delta;
-	for (int i = 0; i < texture_digits.size(); i++){
+	for (int i = 0; i < static_cast<int>(texture_digits.size()); i++){
 		
 		text_man->move_rect(texture_digits[i], window->screen_to_UV_vector(delta));
 	}
@@ -67,7 +67,7 @@ Number_Texture::Number_Texture(Texture_Manager* texture_manager, Window* window,
 	this->trim_leading = trim_leading_zeros;
 }
 Number_Texture::~Number_Texture(){
-	for (int i = 0; i< texture_digits.size(); i++){
+	for (int i = 0; i< static_cast<int>(texture_digits.size()); i++){
 		text_man->destroy_rect(texture_digits[i]);
 	}
 	

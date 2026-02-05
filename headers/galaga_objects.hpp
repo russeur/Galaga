@@ -309,6 +309,9 @@ template <typename... Args> Bug* Bug_Container::add_bug_type(Position2D pos, con
 		case BugType::SHOOTER:
 			return add_bug<Bug_Shooter>(pos, name, galaga_root, constructor_args...);
 			break;
+		default:
+			return nullptr;
+			break;
 	}
 	
 	

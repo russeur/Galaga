@@ -88,7 +88,7 @@ void Rect_Manager<VertType>::destroy_rect(RectangleID ID){
 
 template <typename VertType>
 Rect_Manager<VertType>::Rect_Manager(){
-	static_assert(std::is_base_of<RectangleVert, VertType>::value, "VertType must be derived from RectangleVert!");
+	//static_assert(std::is_base_of<RectangleVert, VertType>::value, "VertType must be derived from RectangleVert!");
 	
 	
 }

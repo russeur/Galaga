@@ -46,7 +46,7 @@ void Path_Developer::remove_point(int index){
 }
 void Path_Developer::remove_point(Position2D pos){
 	
-	for (size_t i = 0; i < path_points.size(); i++){
+	for (int i = 0; i < static_cast<int>(path_points.size()); i++){
 		
 		if (path_points[i].x == pos.x && path_points[i].y == pos.y){
 			remove_point(i);
@@ -111,7 +111,7 @@ void Path_Developer::update_curve(){
 	line_points.push_back(last_point);
 	Position2D last_vel = Position2D{0, 0};
 	
-	for (int destination_point = 1; destination_point < path_points.size(); ){
+	for (int destination_point = 1; destination_point < static_cast<int>(path_points.size()); ){
 		
 		last_vel = find_vel(last_point, last_vel, destination_point, 30);
 		
@@ -127,7 +127,7 @@ void Path_Developer::update_curve(){
 }
 float Path_Developer::distance_from(Position2D pos){
 	float shortest_dist = 10000.0;
-	for (size_t p = 0; p < line_points.size(); p++){
+	for (int p = 0; p < static_cast<int>(line_points.size()); p++){
 		Position2D delta = Position2D{pos.x - line_points[p].x, pos.y - line_points[p].y};
 		float current_dist = sqrt((delta.x * delta.x) + (delta.y * delta.y));
 		
@@ -166,32 +166,33 @@ Path_Developer::Path_Developer(float smoothness, float speed, Window* window) : 
 	
 }
 void Path_Developer_Manager::add_point_to_spawner(int target_bug_spawner, Position2D pos){// adds point to end of path
-	if (target_bug_spawner >= bug_spawners.size()) return;
 	
+	if (target_bug_spawner >= 0 && static_cast<size_t>(target_bug_spawner) >= bug_spawners.size())return;
+	std::cout<<target_bug_spawner<<"# passed\n";
 	
 	add_point_to_path(bug_spawners[target_bug_spawner]->target_path, pos - bug_spawners[target_bug_spawner]->offset);
 	
 	
 }
 void Path_Developer_Manager::insert_point_to_spawner(int target_bug_spawner, Position2D pos, int index){
-	if (target_bug_spawner >= bug_spawners.size()) return;
+	if (target_bug_spawner >= 0 && static_cast<size_t>(target_bug_spawner) >= bug_spawners.size()) return;
 	
 	//paths[target_path]->insert_point(pos, index);
 	
 }
 void Path_Developer_Manager::remove_point_to_spawner(int target_bug_spawner, int index){
-	if (target_bug_spawner >= bug_spawners.size()) return;
+	if (target_bug_spawner >= 0 && static_cast<size_t>(target_bug_spawner) >= bug_spawners.size()) return;
 	
 	//paths[target_path]->remove_point(index);
 }
 void Path_Developer_Manager::remove_point_to_spawner(int target_bug_spawner, Position2D pos){
-	if (target_bug_spawner >= bug_spawners.size()) return;
+	if (target_bug_spawner >= 0 && static_cast<size_t>(target_bug_spawner) >= bug_spawners.size()) return;
 	
 	//paths[target_path]->remove_point(pos);
 }
 
 void Path_Developer_Manager::add_point_to_path(int target_path, Position2D pos){// adds point to end of path
-	if (target_path >= paths.size()) return;
+	if (target_path >= 0 && static_cast<size_t>(target_path) >= paths.size()) return;
 	
 	paths[target_path]->add_point(pos);
 	
@@ -204,7 +205,7 @@ Position3D Path_Developer_Manager::get_unique_color(){
 		unused_colors[i] = true;
 	}
 	
-	for (int p = 0; p < paths.size(); p++){
+	for (int p = 0; p < static_cast<int>(paths.size()); p++){
 		for (int i = 0; i<unique_color_count; i++){
 			if (unique_colors[i].x == paths[p]->color.x && unique_colors[i].y == paths[p]->color.y && unique_colors[i].z == paths[p]->color.z){
 				unused_colors[i] = false;
@@ -243,8 +244,8 @@ void Path_Developer_Manager::add_path(Position3D color, float smoothness, float 
 	
 }
 
-void Path_Developer_Manager::add_spawner(int target_path, int max_enemy_count, float spawn_interval, BugType bug_type, Position2D offset){
-bug_spawners.push_back(new Bug_Spawner_Dev{target_path, max_enemy_count, spawn_interval, bug_type, offset});
+void Path_Developer_Manager::add_spawner(int target_path, int max_enemy_count, float spawn_interval, BugType bug_type, Position2D offset){	
+	bug_spawners.push_back(new Bug_Spawner_Dev{target_path, max_enemy_count, spawn_interval, bug_type, offset});
 }
 
 void Path_Developer_Manager::destroy_spawner(int target_spawner){
@@ -255,20 +256,20 @@ void Path_Developer_Manager::destroy_spawner(int target_spawner){
 }
 	
 void Path_Developer_Manager::destroy_all_paths(){
-	for (int i = 0; i < paths.size(); i++){
+	for (int i = 0; i < static_cast<int>(paths.size()); i++){
 		delete paths[i];
 	}
 	paths.clear();
 }
 void Path_Developer_Manager::destroy_all_spawners(){
-	for (int i = 0; i < bug_spawners.size(); i++){
+	for (int i = 0; i < static_cast<int>(bug_spawners.size()); i++){
 		delete bug_spawners[i];
 	}
 	bug_spawners.clear();
 }
 
 void Path_Developer_Manager::draw_all_paths(){
-	for (size_t i = 0; i < bug_spawners.size(); i++){
+	for (int i = 0; i < static_cast<int>(bug_spawners.size()); i++){
 		paths[bug_spawners[i]->target_path]->draw_curve(bug_spawners[i]->offset, (i == selected_spawner));
 	}
 }
@@ -278,7 +279,7 @@ void Path_Developer_Manager::select_new_spawner(Position2D pos){
 	float closest_dist = 10000.0;
 	int closest_path = -1;
 	
-	for (int s = 0; s < bug_spawners.size(); s++){
+	for (int s = 0; s < static_cast<int>(bug_spawners.size()); s++){
 		float current_dist = paths[bug_spawners[s]->target_path]->distance_from(pos - bug_spawners[s]->offset);
 		
 		if (current_dist < path_dist_thres && current_dist < closest_dist){
@@ -306,14 +307,14 @@ void Path_Developer_Manager::modify_zoom(float delta){
 	if (zoom < .005){
 		zoom = .005;
 	}
-	for (size_t i = 0; i < paths.size(); i++){
+	for (int i = 0; i < static_cast<int>(paths.size()); i++){
 		paths[i]->zoom = zoom;
 		
 	}
 }
 void Path_Developer_Manager::reset_zoom(){
 	zoom = 1.0f;
-	for (size_t i = 0; i < paths.size(); i++){
+	for (int i = 0; i < static_cast<int>(paths.size()); i++){
 		paths[i]->zoom = zoom;
 		
 	}

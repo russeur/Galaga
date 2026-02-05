@@ -1,7 +1,10 @@
 #include "Window.hpp"
 #include "RectManagerClass.hpp"
 
-struct BarVert : public RectangleVert{
+struct BarVert{
+	GLfloat x, y;
+	constexpr static GLfloat z = 0.0f;
+	
 	Position2D is_top;
 	
 	GLfloat fill_percent;// 0.0 to 1.0

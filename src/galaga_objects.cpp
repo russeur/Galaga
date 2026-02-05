@@ -124,13 +124,13 @@ void Galaga_Root::proccess(){
 	
 	
 	
-	for (size_t bullet_i = 0; bullet_i < bullet_container->get_child_count(); bullet_i++){
+	for (int bullet_i = 0; bullet_i < static_cast<int>(bullet_container->get_child_count()); bullet_i++){
 		
 		Bullet* current_bullet = bullet_container->get_child<Bullet>(bullet_i);
 		
 		if (current_bullet->get_child<Collider>("bullet_collider")->layer == LAYER2 && current_bullet->get_child<Collider>("bullet_collider")->layer_mask == LAYER1){ // bullet wants to hit enemies
 			
-				for (size_t bug_i = 0; bug_i < bug_container->get_child_count(); bug_i++){ // loop through bugs because the bullet want s to hit a bug
+				for (int bug_i = 0; bug_i < static_cast<int>(bug_container->get_child_count()); bug_i++){ // loop through bugs because the bullet want s to hit a bug
 					if (collide_bullet_and_bug(current_bullet, bug_container->get_child<Bug>(bug_i))){ // return true if they collided and destroyed
 					
 						bug_i--; // need to decrease current bug index, because we just killed one bug
@@ -187,7 +187,7 @@ void Galaga_Root::proccess(){
 	
 }
 
-Galaga_Root::Galaga_Root(Texture_Manager* texture_manager, Window* window, Bar_Manager* bar_man, bool is_stage_editor) : Node2D(Position2D{0, 0}, "Galaga_Root", nullptr) , score_text(texture_manager, window, Position2D{1000, 150}, false), stage_text(texture_manager, window, Position2D{1855, 968}, false), mult_text(texture_manager, window, Position2D{1225, 150}, false){
+Galaga_Root::Galaga_Root(Texture_Manager* texture_manager, Window* window, Bar_Manager* bar_man, bool is_stage_editor) : Node2D(Position2D{0, 0}, "Galaga_Root", nullptr) , mult_text(texture_manager, window, Position2D{1225, 150}, false), score_text(texture_manager, window, Position2D{1000, 150}, false), stage_text(texture_manager, window, Position2D{1855, 968}, false){
 	
 	this->is_stage_editor = is_stage_editor; // removes many parts of game if true, like points, multipliers, and losing
 	
@@ -206,7 +206,7 @@ Galaga_Root::Galaga_Root(Texture_Manager* texture_manager, Window* window, Bar_M
 	this->tex_man = texture_manager;
 	this->window = window;
 	this->bar_man = bar_man;
-	if (is_stage_editor) this->bar_man == nullptr;
+	if (is_stage_editor) this->bar_man = nullptr;
 	
 	if (!is_stage_editor){ // used in stage editor because it doesn't tally up points 
 		//set up multiplier bars
@@ -217,7 +217,7 @@ Galaga_Root::Galaga_Root(Texture_Manager* texture_manager, Window* window, Bar_M
 		mult_bar_id = bar_man->new_bar(window->screen_to_UV_pos(Position2D{150, 100}), window->screen_to_UV_vector(Position2D{25, -50}), 0.0, Position3D{.9, .2, .1}, 0);
 	}
 	// add player, bullet container, score label containers(for when a bug dies)
-	add_child<Player_Ship>(Position2D{window->width/2, window->height - 100}, "Player_Ship", tex_man, window, 12, 1);
+	add_child<Player_Ship>(Position2D{static_cast<float>(window->width)/2.0f, static_cast<float>(window->height - 100)}, "Player_Ship", tex_man, window, 12, 1);
 	add_child<Node2D>(Position2D{0, 0}, "Bullet_Container");
 	add_child<Node2D>(Position2D{0, 0}, "Score_container");
 	add_child<Sprite>(Position2D{1150, 150}, "Times", Position2D{50, -50}, 5, tex_man, window);
@@ -321,8 +321,8 @@ bool Bug::dive(){
 	
 	
 	
-	dive_path->path_points.push_back(Position2D{rand()%window->width, window->height+50} - get_pos());
-	dive_path->path_points.push_back(Position2D{rand()%window->width, window->height+100} - get_pos());
+	dive_path->path_points.push_back(Position2D{static_cast<float>(rand()%window->width), static_cast<float>(window->height+50)} - get_pos());
+	dive_path->path_points.push_back(Position2D{static_cast<float>(rand()%window->width), static_cast<float>(window->height+100)} - get_pos());
 	
 	set_path(dive_path);
 	is_diving = true;
@@ -444,7 +444,7 @@ void Bug_Container::proccess(){
 	
 	//spawn bugs
 	stage_is_complete = true;
-	for (int i = 0; i < bug_spawners.size(); i++){
+	for (int i = 0; i < static_cast<int>(bug_spawners.size()); i++){
 		
 		stage_is_complete = (!bug_spawners[i]->next_frame()) && stage_is_complete;
 		
@@ -516,10 +516,10 @@ void Bug_Container::add_spawner(int target_path, int max_bugs, float spawn_inter
 }
 
 Coord2D Bug_Container::enlist_bug_to_formation(Bug* target_bug){
-	Coord2D bug_coord = {bug_formation.size()%formation_width_count, 0};
+	Coord2D bug_coord = {static_cast<int>(bug_formation.size())%formation_width_count, 0};
 	bug_coord.y = (bug_formation.size()-bug_coord.x) / formation_width_count;
 	//find bug_coord
-	for (int i = 0; i < bug_formation.size(); i++){
+	for (int i = 0; i < static_cast<int>(bug_formation.size()); i++){
 		if (bug_formation[i] == nullptr){
 			bug_coord = {i%formation_width_count, 0};
 			bug_coord.y = (i-bug_coord.x) / formation_width_count;
@@ -552,24 +552,24 @@ Position2D Bug_Container::get_formation_velocity(Coord2D bug_coord){
 	return find_vel_to_point(bug_formation[bug_index]->get_pos(), target_point, formation_speed);
 }
 Position2D Bug_Container::get_formation_position(Coord2D coord){
-	return current_formation_pos + current_formation_spacing* Position2D{coord.x, coord.y};
+	return current_formation_pos + current_formation_spacing* Position2D{static_cast<float>(coord.x), static_cast<float>(coord.y)};
 }
 
 
 void Bug_Container::start_stage(){
-	for (int i = 0; i < bug_spawners.size(); i++){
+	for (int i = 0; i < static_cast<int>(bug_spawners.size()); i++){
 		bug_spawners[i]->start_spawning();
 	}
 }
 void Bug_Container::end_stage(){
 	
-	for (int i = 0; i < bug_spawners.size(); i++){
+	for (int i = 0; i < static_cast<int>(bug_spawners.size()); i++){
 		delete bug_spawners[i];
 		
 	}
 	bug_spawners.clear();
 	
-	for (int i = 0; i < paths.size(); i++){
+	for (int i = 0; i < static_cast<int>(paths.size()); i++){
 		delete paths[i];
 	}
 	paths.clear();

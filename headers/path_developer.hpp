@@ -7,7 +7,9 @@
 #include "RectManagerClass.hpp"
 #include "path_objects.hpp"
 
-struct Path_Point_Vert : public RectangleVert{
+struct Path_Point_Vert{
+	GLfloat x, y;
+	constexpr static GLfloat z = 0.0f;
 	//0 for beginning, 1 for middle, 2 for end
 	int point_location;
 };

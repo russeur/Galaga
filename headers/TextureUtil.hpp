@@ -12,7 +12,10 @@
 
 typedef int* TextureID;
 
-struct TextureVert : public RectangleVert{
+struct TextureVert{
+	GLfloat x, y;
+	constexpr static GLfloat z = 0.0f;
+	
 	//texture coord
 	GLfloat tx, ty;
 	//texture index

@@ -42,29 +42,10 @@ void Texture_Manager::set_texture(int index, const char* texture_path){
 	glBindTexture(GL_TEXTURE_2D_ARRAY, texture_array);
 	
 	
-	GLenum errorCode;
-	if ((errorCode = glGetError()) != GL_NO_ERROR){
-		std::string error;
-		switch (errorCode){
-			case GL_INVALID_ENUM: error = "INVALID ENUM"; break;
-			case GL_INVALID_VALUE: error = "INVALID VALUE"; break;
-			case GL_INVALID_OPERATION: error = "INVALID OPERATION"; break;
-		}
-		std::cout<<error<<"\n";
-	}
+	
 	glTexSubImage3D(GL_TEXTURE_2D_ARRAY, 0, 0, 0, index, imgWidth, imgHeight, 1, GL_RGBA, GL_UNSIGNED_BYTE, img_bytes);
 	//glGenerateMipmap(GL_TEXTURE_2D_ARRAY);
-	std::cout<<"index: "<<index<<"\n";
-	errorCode;
-	if ((errorCode = glGetError()) != GL_NO_ERROR){
-		std::string error;
-		switch (errorCode){
-			case GL_INVALID_ENUM: error = "INVALID ENUM"; break;
-			case GL_INVALID_VALUE: error = "INVALID VALUE"; break;
-			case GL_INVALID_OPERATION: error = "INVALID OPERATION"; break;
-		}
-		std::cout<<error<<"\n";
-	}
+	
 	
 	stbi_image_free(img_bytes);
 	glBindTexture(GL_TEXTURE_2D_ARRAY, 0);

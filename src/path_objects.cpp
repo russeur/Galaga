@@ -10,7 +10,7 @@ Position2D Path::find_vel(Position2D pos, Position2D vel, int& destination_point
 		speed = this->speed;
 		
 		
-		if (destination_point == path_points.size()){
+		if (destination_point == static_cast<int>(path_points.size())){
 			return Position2D{0, 0};
 		}
 		

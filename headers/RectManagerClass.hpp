@@ -8,6 +8,7 @@
 #include <list>
 #include "Position2D.hpp"
 
+
 typedef int* RectangleID;
 /*
 struct Position2D{
